@@ -13,10 +13,8 @@ export interface EvidenceItem {
 }
 
 export interface SolutionSEO {
-    slug: string;
     title: string;
-    description: string;
-    canonical?: string;
+    metaDescription: string;
 }
 
 export interface Solution {
@@ -28,4 +26,6 @@ export interface Solution {
     seo: SolutionSEO;
 
     evidence: EvidenceItem[];
+
+    relatedSolutions?: string[];
 }
