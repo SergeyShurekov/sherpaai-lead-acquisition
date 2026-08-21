@@ -1,3 +1,5 @@
 import type { Solution } from "@/types/solution";
 
-export const solutionRegistry: Solution[] = [];
+import { aiRecruiter } from "./ai-recruiter";
+
+export const solutionRegistry: Solution[] = [aiRecruiter];
