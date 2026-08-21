@@ -11,6 +11,12 @@ interface SolutionPageProps {
   }>;
 }
 
+export function generateStaticParams() {
+  return solutionRegistry.map((solution) => ({
+    slug: solution.slug,
+  }));
+}
+
 export async function generateMetadata({
   params,
 }: SolutionPageProps): Promise<Metadata> {
