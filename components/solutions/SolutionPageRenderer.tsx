@@ -54,9 +54,9 @@ function ClaimStatus({ claim }: { claim: SolutionClaim }) {
     <div className={styles.claimMeta}>
       <EvidenceBadge status={claim.status} />
 
-      {claim.source && (
+      {/* {claim.source && (
         <span className={styles.sourceLabel}>Источник: {claim.source}</span>
-      )}
+      )} */}
     </div>
   );
 }
@@ -203,15 +203,14 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
             <div className={styles.heroContent}>
               <p className={styles.heroKicker}>
                 <span className={styles.heroKickerMark}>AI</span>
-                SherpaAI · решение для рекрутинга
+                Sherpa AI · решение для рекрутинга
               </p>
 
               <h1 className={styles.heroTitle}>{solution.h1}</h1>
 
               <p className={styles.heroDescription}>
-                AI-рекрутинг под задачи компании: функциональность формируется
-                вокруг конкретного процесса подбора, его проблем и требований
-                бизнеса.
+                AI‑рекрутинг, заточенный под ваш процесс подбора: учитываем
+                специфику, боли и требования вашего бизнеса
               </p>
 
               <div className={styles.heroActions}>
@@ -257,7 +256,7 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
                 </div>
 
                 <span className={styles.visualChromeLabel}>
-                  AI RECRUITING WORKFLOW
+                  ПРОЦЕСС AI-РЕКРУТИНГА
                 </span>
               </div>
 
@@ -269,7 +268,7 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
 
                   <div>
                     <strong>Задача бизнеса</strong>
-                    <span>Требования и процесс подбора</span>
+                    <span>Требования к кандидатам и этапам подбора</span>
                   </div>
                 </div>
 
@@ -286,7 +285,9 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
 
                   <div>
                     <strong>AI-конфигурация</strong>
-                    <span>Логика и сценарий под задачу</span>
+                    <span>
+                      Конструктор ИИ: собираем алгоритм под вашу задачу.
+                    </span>
                   </div>
                 </div>
 
@@ -307,9 +308,9 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
               </div>
 
               <div className={styles.visualFooter}>
-                <span>CONFIGURABLE</span>
-                <span>PROCESS-DRIVEN</span>
-                <span>AI-ASSISTED</span>
+                <span>ГИБКИЙ</span>
+                <span>ОРИЕНТИРОВАННЫЙ НА ПРОЦЕСС</span>
+                <span>С УЧАСТИЕМ ИИ</span>
               </div>
             </div>
           </div>
@@ -333,12 +334,12 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
               <span className={styles.sectionIndex}>01</span>
 
               <h3>
-                Рекрутинг требует времени там, где процесс можно структурировать
+                Рекрутинг требует времени там, где процесс можно упорядочить
               </h3>
 
               <p>
-                Повторяющиеся операции и работа с потоком кандидатов создают
-                области, которые имеет смысл рассматривать для AI-автоматизации.
+                Там, где идёт поток кандидатов и много рутинных действий,
+                AI‑автоматизация особенно уместна
               </p>
             </div>
 
@@ -370,11 +371,14 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
 
           <div className={styles.transformation}>
             <div className={styles.transformationSide}>
-              <span className={styles.transformationLabel}>INPUT</span>
+              <span className={styles.transformationLabel}>ДАНО</span>
 
               <h3>Проблема процесса</h3>
 
-              <p>Конкретная задача подбора и требования бизнеса.</p>
+              <p>
+                Определяем узкие места в подборе и конкретные задачи, которые
+                нужно решить
+              </p>
             </div>
 
             <div className={styles.transformationCore}>
@@ -386,11 +390,14 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
             </div>
 
             <div className={styles.transformationSide}>
-              <span className={styles.transformationLabel}>OUTPUT</span>
+              <span className={styles.transformationLabel}>ВЫХОД</span>
 
-              <h3>Рабочий сценарий</h3>
+              <h3>Сценарий решения</h3>
 
-              <p>Функциональность, сформированная под выбранный процесс.</p>
+              <p>
+                Формируем функционал под ваш процесс: решение работает в вашей
+                логике, а не требует перестраивать работу
+              </p>
             </div>
           </div>
 
@@ -418,9 +425,9 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
       >
         <div className={styles.container}>
           <SectionIntro
-            eyebrow="Функциональные области"
-            title="Что может быть сформировано под задачу"
-            intro="Ниже перечислены не фиксированные модули продукта, а релевантные области AI-рекрутинга, которые могут быть частью конфигурации при наличии соответствующего бизнес-требования."
+            eyebrow="Области применения"
+            title="Какие задачи рекрутинга можно автоматизировать"
+            intro='Это не готовый "коробочный" продукт с функциями, которые вы оплатите, но никогда не откроете. Это конструктор: мы включим только те блоки ИИ-рекрутинга, которые закроют ваше конкретное бизнес-требование'
           />
 
           <div className={styles.capabilityGrid}>
@@ -436,9 +443,9 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
 
                 <h3>{item.text}</h3>
 
-                <p>Область возможной конфигурации</p>
+                {/* <p>Область возможной конфигурации</p>
 
-                <ClaimStatus claim={item} />
+                <ClaimStatus claim={item} /> */}
               </article>
             ))}
           </div>
@@ -449,7 +456,7 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
       <section id="scenarios" className={styles.section}>
         <div className={styles.container}>
           <SectionIntro
-            eyebrow="Сценарии"
+            eyebrow="Примеры задач"
             title="Типовые задачи рекрутинга"
             intro="Каждый сценарий начинается с конкретной проблемы процесса и заканчивается определением подхода, который имеет смысл реализовать."
           />
@@ -537,11 +544,12 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
                 </span>
 
                 <div>
-                  <h3>Конкретный набор подключений не фиксируется заранее</h3>
-
+                  <h3>Подключаем нужные вам системы</h3>
                   <p>
-                    Интеграционный контур определяется существующей
-                    инфраструктурой компании и требованиями конкретной задачи.
+                    Интеграции подбираются под задачи компании и уже
+                    используемые системы и сервисы. Не нужно менять привычные
+                    процессы — AI-рекрутинг встраивается в существующую
+                    инфраструктуру.
                   </p>
                 </div>
               </div>
@@ -554,7 +562,7 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
       <section id="value" className={styles.section}>
         <div className={styles.container}>
           <SectionIntro
-            eyebrow="Бизнес-ценность"
+            eyebrow="Результат"
             title={solution.businessValue.title}
           />
 
@@ -564,13 +572,12 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
                 →
               </span>
 
-              <h3>
-                Ценность должна оцениваться относительно реального процесса
-              </h3>
+              <h3>Меньше ручной работы — больше возможностей для команды</h3>
 
               <p>
-                Степень эффекта зависит от того, какие этапы подбора
-                автоматизируются и как устроен текущий процесс компании.
+                Мы автоматизируем те этапы подбора, которые отнимают больше
+                всего времени, чтобы рекрутеры могли сосредоточиться на задачах,
+                где действительно требуется их участие.
               </p>
             </div>
 
@@ -599,9 +606,9 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
       >
         <div className={styles.container}>
           <SectionIntro
-            eyebrow="Доказательства"
-            title="Что известно о решении"
-            intro="Статус каждого утверждения сохраняется в соответствии с исходными данными решения."
+            eyebrow="Ключевое"
+            title="AI-рекрутинг под задачи вашей компании"
+            intro="Sherpa AI помогает автоматизировать конкретные этапы найма, интегрируется с необходимыми системами и адаптируется под существующие процессы компании."
           />
 
           <div className={styles.evidenceLegend}>
@@ -625,9 +632,9 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
                   <p className={styles.evidenceValue}>{item.value}</p>
                 )}
 
-                <span className={styles.evidenceSource}>
+                {/* <span className={styles.evidenceSource}>
                   Источник: {item.source}
-                </span>
+                </span> */}
               </article>
             ))}
           </div>
@@ -680,12 +687,12 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
             <div>
               <p className={styles.eyebrow}>Следующий шаг</p>
 
-              <h2>Обсудить задачу рекрутинга</h2>
+              <h2>Обсудить задачи рекрутинга</h2>
 
               <p>
-                Опишите процесс подбора, который требуется автоматизировать или
-                усилить. Решение можно сформировать после уточнения задачи и
-                требований бизнеса.
+                Расскажите, с какими задачами сталкивается ваша команда. Вместе
+                определим, где AI действительно может помочь и какой подход
+                имеет смысл для вашей компании.
               </p>
             </div>
 
