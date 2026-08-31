@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { getAbsoluteUrl } from "@/lib/site";
 import type { EvidenceStatus, Solution, SolutionClaim } from "@/types/solution";
+import { CallbackForm } from "./CallbackForm";
 
 import styles from "./SolutionPageRenderer.module.css";
 
@@ -175,25 +176,35 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
 
       {/* Breadcrumbs */}
       <div className={styles.container}>
-        <nav aria-label="Хлебные крошки" className={styles.breadcrumbs}>
-          <Link href="/" className={styles.breadcrumbLink}>
-            Главная
-          </Link>
+        <div className={styles.breadcrumbsRow}>
+          <nav aria-label="Хлебные крошки" className={styles.breadcrumbs}>
+            <Link href="/" className={styles.breadcrumbLink}>
+              Главная
+            </Link>
 
-          <span aria-hidden="true" className={styles.breadcrumbSeparator}>
-            /
-          </span>
+            <span aria-hidden="true" className={styles.breadcrumbSeparator}>
+              /
+            </span>
 
-          <span>Решения</span>
+            <a
+              href="https://sherpaai.ru/bot/chat-bot-rekruting/"
+              className={styles.breadcrumbLink}
+            >
+              Sherpa AI
+            </a>
 
-          <span aria-hidden="true" className={styles.breadcrumbSeparator}>
-            /
-          </span>
+            <span aria-hidden="true" className={styles.breadcrumbSeparator}>
+              /
+            </span>
 
-          <span aria-current="page" className={styles.breadcrumbCurrent}>
-            {solution.name}
-          </span>
-        </nav>
+            <span aria-current="page" className={styles.breadcrumbCurrent}>
+              {solution.name}
+            </span>
+          </nav>
+          <a className={styles.headerPhone} href="tel:88007007683">
+            8 (800) 700-76-83
+          </a>
+        </div>
       </div>
 
       {/* Hero */}
@@ -209,8 +220,9 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
               <h1 className={styles.heroTitle}>{solution.h1}</h1>
 
               <p className={styles.heroDescription}>
-                AI‑рекрутинг, заточенный под ваш процесс подбора: учитываем
-                специфику, боли и требования вашего бизнеса
+                AI для автоматизации задач рекрутинга: обработка откликов,
+                первичный отбор кандидатов, коммуникация и другие повторяющиеся
+                этапы подбора.
               </p>
 
               <div className={styles.heroActions}>
@@ -350,7 +362,8 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
                     {String(index + 1).padStart(2, "0")}
                   </div>
 
-                  <h3>{item.text}</h3>
+                  <h3>{item.title}</h3>
+                  <p>{item.text}</p>
 
                   <ClaimStatus claim={item} />
                 </article>
@@ -690,33 +703,29 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
               <h2>Обсудить задачи рекрутинга</h2>
 
               <p>
-                Расскажите, с какими задачами сталкивается ваша команда. Вместе
-                определим, где AI действительно может помочь и какой подход
-                имеет смысл для вашей компании.
+                Расскажите, какие этапы подбора занимают больше всего времени.
+                Определим, где AI может автоматизировать работу и какой сценарий
+                имеет смысл реализовать.
               </p>
             </div>
 
             <div className={styles.finalCtaActions}>
-              <a
-                className={`${styles.button} ${styles.buttonLight}`}
-                href={solution.primaryCta.href ?? "#contact"}
-              >
-                {solution.primaryCta.label}
-                <ArrowIcon />
-              </a>
-
-              {solution.secondaryCta && (
-                <a
-                  className={`${styles.button} ${styles.buttonOutlineLight}`}
-                  href={solution.secondaryCta.href ?? "#contact"}
-                >
-                  {solution.secondaryCta.label}
-                </a>
-              )}
+              <CallbackForm />
             </div>
           </div>
         </div>
       </section>
+
+      <footer className={styles.footer}>
+        <div className={styles.container}>
+          <a
+            href="https://sherpaai.ru/bot/chat-bot-rekruting/"
+            className={styles.footerLink}
+          >
+            AI-рекрутер Sherpa AI
+          </a>
+        </div>
+      </footer>
     </main>
   );
 }

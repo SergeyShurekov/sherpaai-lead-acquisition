@@ -18,6 +18,7 @@ export interface SolutionSEO {
 }
 
 export interface SolutionClaim {
+    title: string;
     text: string;
     status: EvidenceStatus;
     source?: string;
