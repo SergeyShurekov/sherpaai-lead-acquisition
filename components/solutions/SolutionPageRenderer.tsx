@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 import { getAbsoluteUrl } from "@/lib/site";
 import type { EvidenceStatus, Solution, SolutionClaim } from "@/types/solution";
 import { CallbackForm } from "./CallbackForm";
@@ -173,39 +171,6 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
           }}
         />
       )}
-
-      {/* Breadcrumbs */}
-      <div className={styles.container}>
-        <div className={styles.breadcrumbsRow}>
-          <nav aria-label="Хлебные крошки" className={styles.breadcrumbs}>
-            <Link href="/" className={styles.breadcrumbLink}>
-              Главная
-            </Link>
-
-            <span aria-hidden="true" className={styles.breadcrumbSeparator}>
-              /
-            </span>
-
-            <a
-              href="https://sherpaai.ru/bot/chat-bot-rekruting/"
-              className={styles.breadcrumbLink}
-            >
-              Sherpa AI
-            </a>
-
-            <span aria-hidden="true" className={styles.breadcrumbSeparator}>
-              /
-            </span>
-
-            <span aria-current="page" className={styles.breadcrumbCurrent}>
-              {solution.name}
-            </span>
-          </nav>
-          <a className={styles.headerPhone} href="tel:88007007683">
-            8 (800) 700-76-83
-          </a>
-        </div>
-      </div>
 
       {/* Hero */}
       <section className={styles.hero}>
@@ -715,17 +680,6 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
           </div>
         </div>
       </section>
-
-      <footer className={styles.footer}>
-        <div className={styles.container}>
-          <a
-            href="https://sherpaai.ru/bot/chat-bot-rekruting/"
-            className={styles.footerLink}
-          >
-            AI-рекрутер Sherpa AI
-          </a>
-        </div>
-      </footer>
     </main>
   );
 }

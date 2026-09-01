@@ -1,6 +1,22 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  --page-bg: #ffffff;
+  --surface: #f6f8fa;
+  --surface-strong: #eef2f5;
+  --ink: #17212b;
+  --ink-soft: #566575;
+  --ink-muted: #748292;
+  --line: #dfe5ea;
+  --line-strong: #cbd4dc;
+  --accent: #0f766e;
+  --accent-dark: #0b5f59;
+  --accent-soft: #e7f4f2;
+  --dark: #17232d;
+  --dark-soft: #22313d;
+  --dark-line: #344451;
+  --white: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
