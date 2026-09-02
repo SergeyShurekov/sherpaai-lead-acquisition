@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { GoogleAnalytics } from "@next/third-parties/google";
+import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -20,7 +22,29 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body>{children}</body>
+      <body>
+        {children}
+
+        <GoogleAnalytics gaId="G-WRTL2HZ2ER" />
+
+        <Script id="yandex-metrika" strategy="afterInteractive">
+          {`
+            (function(m,e,t,r,i,k,a){
+              m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+              m[i].l=1*new Date();
+              for (var j=0; j<document.scripts.length; j++) {
+                if (document.scripts[j].src === r) return;
+              }
+              k=e.createElement(t),a=e.getElementsByTagName(t)[0];
+              k.async=1;
+              k.src=r;
+              a.parentNode.insertBefore(k,a);
+            })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+           ym(112176905, "init", {});
+          `}
+        </Script>
+      </body>
     </html>
   );
 }
