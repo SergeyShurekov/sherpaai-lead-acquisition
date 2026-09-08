@@ -20,14 +20,24 @@ export interface SolutionSEO {
 export interface SolutionClaim {
     title: string;
     text: string;
+    list?: string[];
     status: EvidenceStatus;
     source?: string;
+    sourceUrl?: string;
+    sourceLinkText?: string;
 }
 
 export interface SolutionSection {
     title: string;
     intro?: string;
+    statement?: string;
     items: SolutionClaim[];
+}
+
+export interface SolutionWorkflow {
+    title: string;
+    intro?: string;
+    steps: SolutionClaim[];
 }
 
 export interface SolutionScenario {
@@ -65,8 +75,10 @@ export interface Solution {
     solution: SolutionSection;
     capabilities: SolutionClaim[];
     scenarios: SolutionScenario[];
+    workflow?: SolutionWorkflow;
     integrations?: SolutionSection;
     businessValue: SolutionSection;
+    humanInLoop?: SolutionSection;
     evidence: EvidenceItem[];
     faq: SolutionFAQItem[];
 
@@ -75,4 +87,7 @@ export interface Solution {
 
     relatedSolutions?: string[];
     entities?: string[];
+
+    heroDescription?: string;
+    finalCtaDescription?: string;
 }

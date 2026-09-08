@@ -4,7 +4,11 @@ import { FormEvent, useState } from "react";
 
 import styles from "./SolutionPageRenderer.module.css";
 
-export function CallbackForm() {
+interface CallbackFormProps {
+  solutionSlug: string;
+}
+
+export function CallbackForm({ solutionSlug }: CallbackFormProps) {
   const [phone, setPhone] = useState("");
   const [status, setStatus] = useState<
     "idle" | "loading" | "success" | "error"
@@ -27,7 +31,7 @@ export function CallbackForm() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ phone: value }),
+        body: JSON.stringify({ phone: value, solutionSlug }),
       });
 
       if (!response.ok) {

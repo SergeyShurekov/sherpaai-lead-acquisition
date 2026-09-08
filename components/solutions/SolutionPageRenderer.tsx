@@ -60,6 +60,43 @@ function ClaimStatus({ claim }: { claim: SolutionClaim }) {
   );
 }
 
+function ClaimText({ claim }: { claim: SolutionClaim }) {
+  const linkText = claim.sourceLinkText;
+  const linkIndex = linkText ? claim.text.indexOf(linkText) : -1;
+  const beforeLink =
+    linkIndex >= 0 ? claim.text.slice(0, linkIndex) : claim.text;
+  const afterLink =
+    linkIndex >= 0 && linkText
+      ? claim.text.slice(linkIndex + linkText.length)
+      : "";
+
+  return (
+    <>
+      <p>
+        {linkIndex >= 0 && linkText && claim.sourceUrl ? (
+          <>
+            {beforeLink}
+            <a href={claim.sourceUrl} target="_blank" rel="noreferrer">
+              {linkText}
+            </a>
+            {afterLink}
+          </>
+        ) : (
+          claim.text
+        )}
+      </p>
+
+      {claim.list && (
+        <ul className={styles.claimTextList}>
+          {claim.list.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      )}
+    </>
+  );
+}
+
 function SectionIntro({
   eyebrow,
   title,
@@ -74,7 +111,13 @@ function SectionIntro({
       <p className={styles.eyebrow}>{eyebrow}</p>
       <h2 className={styles.sectionTitle}>{title}</h2>
 
-      {intro && <p className={styles.sectionIntro}>{intro}</p>}
+      {intro && (
+        <div className={styles.sectionIntro}>
+          {intro.split("\n\n").map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -100,6 +143,9 @@ function ArrowIcon() {
 
 export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
   const pageUrl = getAbsoluteUrl(`/${solution.slug}/`);
+  const heroDescription = solution.heroDescription ?? solution.solution.intro;
+  const finalCtaDescription =
+    solution.finalCtaDescription ?? solution.businessValue.intro;
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -114,8 +160,8 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
       {
         "@type": "ListItem",
         position: 2,
-        name: "Решения",
-        item: getAbsoluteUrl("/"),
+        name: "Sherpa AI",
+        item: "https://sherpaai.ru/bot/chat-bot-rekruting/",
       },
       {
         "@type": "ListItem",
@@ -184,11 +230,9 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
 
               <h1 className={styles.heroTitle}>{solution.h1}</h1>
 
-              <p className={styles.heroDescription}>
-                AI для автоматизации задач рекрутинга: обработка откликов,
-                первичный отбор кандидатов, коммуникация и другие повторяющиеся
-                этапы подбора.
-              </p>
+              {heroDescription && (
+                <p className={styles.heroDescription}>{heroDescription}</p>
+              )}
 
               <div className={styles.heroActions}>
                 <a
@@ -327,8 +371,8 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
                     {String(index + 1).padStart(2, "0")}
                   </div>
 
-                  <h3>{item.title}</h3>
-                  <p>{item.text}</p>
+                  <h3>{item.title || item.text}</h3>
+                  {item.title && <ClaimText claim={item} />}
 
                   <ClaimStatus claim={item} />
                 </article>
@@ -387,7 +431,8 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
                 </span>
 
                 <div className={styles.solutionItemBody}>
-                  <h3>{item.text}</h3>
+                  <h3>{item.title || item.text}</h3>
+                  {item.title && <ClaimText claim={item} />}
                   <ClaimStatus claim={item} />
                 </div>
               </article>
@@ -419,11 +464,9 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
                   <span />
                 </div>
 
-                <h3>{item.text}</h3>
-
-                {/* <p>Область возможной конфигурации</p>
-
-                <ClaimStatus claim={item} /> */}
+                <h3>{item.title || item.text}</h3>
+                {item.title && <ClaimText claim={item} />}
+                <ClaimStatus claim={item} />
               </article>
             ))}
           </div>
@@ -436,7 +479,7 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
           <SectionIntro
             eyebrow="Примеры задач"
             title="Типовые задачи рекрутинга"
-            intro="Каждый сценарий начинается с конкретной проблемы процесса и заканчивается определением подхода, который имеет смысл реализовать."
+            intro="Каждый сценарий начинается с выявления конкретной проблемы процесса и заканчивается определением подхода, который имеет смысл реализовать."
           />
 
           <div className={styles.scenarioGrid}>
@@ -488,6 +531,40 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
         </div>
       </section>
 
+      {solution.workflow && (
+        <section
+          id="workflow"
+          className={`${styles.section} ${styles.sectionMuted}`}
+        >
+          <div className={styles.container}>
+            <SectionIntro
+              eyebrow="Процесс подбора"
+              title={solution.workflow.title}
+              intro={solution.workflow.intro}
+            />
+            <ol className={styles.workflowTimeline}>
+              {solution.workflow.steps.map((step, index) => (
+                <li
+                  className={styles.workflowTimelineItem}
+                  key={`${step.text}-${index}`}
+                >
+                  <span
+                    className={styles.workflowTimelineNumber}
+                    aria-hidden="true"
+                  >
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <div>
+                    <h3>{step.title || step.text}</h3>
+                    {step.text !== step.title && <p>{step.text}</p>}
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+      )}
+
       {/* Integrations */}
       {solution.integrations && (
         <section
@@ -509,7 +586,8 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
                       ↗
                     </span>
 
-                    <h3>{item.text}</h3>
+                    <h3>{item.title || item.text}</h3>
+                    {item.title && <ClaimText claim={item} />}
 
                     <ClaimStatus claim={item} />
                   </article>
@@ -532,6 +610,46 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
                 </div>
               </div>
             )}
+          </div>
+        </section>
+      )}
+
+      {solution.humanInLoop && (
+        <section
+          id="human-in-loop"
+          className={`${styles.section} ${styles.humanInLoop}`}
+        >
+          <div className={styles.container}>
+            <SectionIntro
+              eyebrow="Участие рекрутера"
+              title={solution.humanInLoop.title}
+              intro={solution.humanInLoop.intro}
+            />
+            <div className={styles.humanInLoopLayout}>
+              <div className={styles.humanInLoopStatement}>
+                <span className={styles.humanInLoopArrow} aria-hidden="true">
+                  →
+                </span>
+                <p>
+                  {solution.humanInLoop.statement ??
+                    solution.humanInLoop.intro?.split("\n\n")[1]}
+                </p>
+              </div>
+              <div className={styles.humanInLoopList}>
+                {solution.humanInLoop.items.map((item, index) => (
+                  <article
+                    className={styles.humanInLoopItem}
+                    key={`${item.text}-${index}`}
+                  >
+                    <span>{String(index + 1).padStart(2, "0")}</span>
+                    <div>
+                      <h3>{item.title || item.text}</h3>
+                      {item.title && <ClaimText claim={item} />}
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
           </div>
         </section>
       )}
@@ -567,7 +685,8 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
                   </span>
 
                   <div className={styles.valueItemContent}>
-                    <h3>{item.text}</h3>
+                    <h3>{item.title || item.text}</h3>
+                    {item.title && <ClaimText claim={item} />}
                     <ClaimStatus claim={item} />
                   </div>
                 </article>
@@ -586,7 +705,7 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
           <SectionIntro
             eyebrow="Ключевое"
             title="AI-рекрутинг под задачи вашей компании"
-            intro="Sherpa AI помогает автоматизировать конкретные этапы найма, интегрируется с необходимыми системами и адаптируется под существующие процессы компании."
+            intro="Sherpa AI помогает автоматизировать конкретные этапы найма, интегрируется с необходимыми системами и адаптируется под существующие процессы компании. Ниже — примеры проектов, показывающие, как такой подход применялся на практике в HR-процессах."
           />
 
           <div className={styles.evidenceLegend}>
@@ -665,17 +784,13 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
             <div>
               <p className={styles.eyebrow}>Следующий шаг</p>
 
-              <h2>Обсудить задачи рекрутинга</h2>
+              <h2>{solution.primaryCta.label}</h2>
 
-              <p>
-                Расскажите, какие этапы подбора занимают больше всего времени.
-                Определим, где AI может автоматизировать работу и какой сценарий
-                имеет смысл реализовать.
-              </p>
+              {finalCtaDescription && <p>{finalCtaDescription}</p>}
             </div>
 
             <div className={styles.finalCtaActions}>
-              <CallbackForm />
+              <CallbackForm solutionSlug={solution.slug} />
             </div>
           </div>
         </div>
