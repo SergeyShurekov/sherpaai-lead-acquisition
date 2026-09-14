@@ -1,5 +1,7 @@
 import { getAbsoluteUrl } from "@/lib/site";
+import { solutionRegistry } from "@/content/solutions/registry";
 import type { EvidenceStatus, Solution, SolutionClaim } from "@/types/solution";
+import Link from "next/link";
 import { CallbackForm } from "./CallbackForm";
 
 import styles from "./SolutionPageRenderer.module.css";
@@ -48,43 +50,48 @@ function EvidenceBadge({ status }: { status: EvidenceStatus }) {
   );
 }
 
-function ClaimStatus({ claim }: { claim: SolutionClaim }) {
-  return (
-    <div className={styles.claimMeta}>
-      <EvidenceBadge status={claim.status} />
-
-      {/* {claim.source && (
-        <span className={styles.sourceLabel}>Источник: {claim.source}</span>
-      )} */}
-    </div>
-  );
-}
-
 function ClaimText({ claim }: { claim: SolutionClaim }) {
-  const linkText = claim.sourceLinkText;
-  const linkIndex = linkText ? claim.text.indexOf(linkText) : -1;
-  const beforeLink =
-    linkIndex >= 0 ? claim.text.slice(0, linkIndex) : claim.text;
-  const afterLink =
-    linkIndex >= 0 && linkText
-      ? claim.text.slice(linkIndex + linkText.length)
-      : "";
-
   return (
     <>
-      <p>
-        {linkIndex >= 0 && linkText && claim.sourceUrl ? (
-          <>
-            {beforeLink}
+      {claim.text.split("\n\n").map((paragraph) => {
+        const linkText = claim.sourceLinkText;
+        const linkIndex = linkText ? paragraph.indexOf(linkText) : -1;
+        const beforeLink =
+          linkIndex >= 0 ? paragraph.slice(0, linkIndex) : paragraph;
+        const afterLink =
+          linkIndex >= 0 && linkText
+            ? paragraph.slice(linkIndex + linkText.length)
+            : "";
+
+        return (
+          <p key={paragraph}>
+            {linkIndex >= 0 && linkText && claim.sourceUrl ? (
+              <>
+                {beforeLink}
+                <a href={claim.sourceUrl} target="_blank" rel="noreferrer">
+                  {linkText}
+                </a>
+                {afterLink}
+              </>
+            ) : (
+              paragraph
+            )}
+          </p>
+        );
+      })}
+
+      {claim.source && (
+        <p className={styles.claimSource}>
+          Источник:{" "}
+          {claim.sourceUrl ? (
             <a href={claim.sourceUrl} target="_blank" rel="noreferrer">
-              {linkText}
+              {claim.source}
             </a>
-            {afterLink}
-          </>
-        ) : (
-          claim.text
-        )}
-      </p>
+          ) : (
+            claim.source
+          )}
+        </p>
+      )}
 
       {claim.list && (
         <ul className={styles.claimTextList}>
@@ -138,6 +145,49 @@ function ArrowIcon() {
         strokeWidth="1.5"
       />
     </svg>
+  );
+}
+
+function ContentSection({
+  id,
+  eyebrow,
+  section,
+}: {
+  id: string;
+  eyebrow: string;
+  section: Solution["problem"];
+}) {
+  return (
+    <section id={id} className={styles.section}>
+      <div className={styles.container}>
+        <SectionIntro
+          eyebrow={eyebrow}
+          title={section.title}
+          intro={section.intro}
+        />
+
+        {section.statement && (
+          <p className={styles.integrationStatement}>{section.statement}</p>
+        )}
+
+        {section.items.length > 0 && (
+          <div className={styles.claimGrid}>
+            {section.items.map((item, index) => (
+              <article
+                className={styles.claimCard}
+                key={`${item.text}-${index}`}
+              >
+                <div className={styles.cardNumber}>
+                  {String(index + 1).padStart(2, "0")}
+                </div>
+                <h3>{item.title || item.text}</h3>
+                {item.title && <ClaimText claim={item} />}
+              </article>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
   );
 }
 
@@ -259,7 +309,8 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
                 </span>
 
                 <span>
-                  Решение формируется вокруг конкретной задачи бизнеса
+                  {solution.heroNote ??
+                    "Решение формируется вокруг конкретной задачи бизнеса"}
                 </span>
               </div>
             </div>
@@ -267,7 +318,7 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
             {/* Conceptual workflow visualization */}
             <div
               className={styles.heroVisual}
-              aria-label="Концептуальная схема AI-рекрутинга"
+              aria-label="Концептуальная схема рабочего сценария"
             >
               <div className={styles.visualChrome}>
                 <div className={styles.visualChromeDots} aria-hidden="true">
@@ -277,7 +328,7 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
                 </div>
 
                 <span className={styles.visualChromeLabel}>
-                  ПРОЦЕСС AI-РЕКРУТИНГА
+                  РАБОЧИЙ СЦЕНАРИЙ
                 </span>
               </div>
 
@@ -288,8 +339,8 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
                   </span>
 
                   <div>
-                    <strong>Задача бизнеса</strong>
-                    <span>Требования к кандидатам и этапам подбора</span>
+                    <strong>Задача</strong>
+                    <span>Конкретный участок работы</span>
                   </div>
                 </div>
 
@@ -305,10 +356,8 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
                   </span>
 
                   <div>
-                    <strong>AI-конфигурация</strong>
-                    <span>
-                      Конструктор ИИ: собираем алгоритм под вашу задачу.
-                    </span>
+                    <strong>Проектирование</strong>
+                    <span>Определяем подход и последовательность действий</span>
                   </div>
                 </div>
 
@@ -322,8 +371,8 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
                   </span>
 
                   <div>
-                    <strong>Рабочий сценарий</strong>
-                    <span>Автоматизированный процесс рекрутинга</span>
+                    <strong>Результат</strong>
+                    <span>Настроенный рабочий сценарий</span>
                   </div>
                 </div>
               </div>
@@ -331,7 +380,7 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
               <div className={styles.visualFooter}>
                 <span>ГИБКИЙ</span>
                 <span>ОРИЕНТИРОВАННЫЙ НА ПРОЦЕСС</span>
-                <span>С УЧАСТИЕМ ИИ</span>
+                <span>С УЧАСТИЕМ СПЕЦИАЛИСТА</span>
               </div>
             </div>
           </div>
@@ -354,14 +403,14 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
             <div className={styles.problemLead}>
               <span className={styles.sectionIndex}>01</span>
 
-              <h3>
-                Рекрутинг требует времени там, где процесс можно упорядочить
-              </h3>
+              <h3>{solution.problem.statement ?? solution.problem.title}</h3>
 
-              <p>
-                Там, где идёт поток кандидатов и много рутинных действий,
-                AI‑автоматизация особенно уместна
-              </p>
+              {(solution.problem.lead ?? solution.problem.intro) && (
+                <p>
+                  {solution.problem.lead ??
+                    solution.problem.intro?.split("\n\n")[0]}
+                </p>
+              )}
             </div>
 
             <div className={styles.claimGrid}>
@@ -373,8 +422,6 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
 
                   <h3>{item.title || item.text}</h3>
                   {item.title && <ClaimText claim={item} />}
-
-                  <ClaimStatus claim={item} />
                 </article>
               ))}
             </div>
@@ -391,38 +438,6 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
             intro={solution.solution.intro}
           />
 
-          <div className={styles.transformation}>
-            <div className={styles.transformationSide}>
-              <span className={styles.transformationLabel}>ДАНО</span>
-
-              <h3>Проблема процесса</h3>
-
-              <p>
-                Определяем узкие места в подборе и конкретные задачи, которые
-                нужно решить
-              </p>
-            </div>
-
-            <div className={styles.transformationCore}>
-              <span className={styles.transformationCoreMark}>AI</span>
-
-              <span>Конфигурация</span>
-
-              <ArrowIcon />
-            </div>
-
-            <div className={styles.transformationSide}>
-              <span className={styles.transformationLabel}>ВЫХОД</span>
-
-              <h3>Сценарий решения</h3>
-
-              <p>
-                Формируем функционал под ваш процесс: решение работает в вашей
-                логике, а не требует перестраивать работу
-              </p>
-            </div>
-          </div>
-
           <div className={styles.solutionList}>
             {solution.solution.items.map((item, index) => (
               <article className={styles.solutionItem} key={item.text}>
@@ -433,7 +448,6 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
                 <div className={styles.solutionItemBody}>
                   <h3>{item.title || item.text}</h3>
                   {item.title && <ClaimText claim={item} />}
-                  <ClaimStatus claim={item} />
                 </div>
               </article>
             ))}
@@ -448,9 +462,15 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
       >
         <div className={styles.container}>
           <SectionIntro
-            eyebrow="Области применения"
-            title="Какие задачи рекрутинга можно автоматизировать"
-            intro='Это не готовый "коробочный" продукт с функциями, которые вы оплатите, но никогда не откроете. Это конструктор: мы включим только те блоки ИИ-рекрутинга, которые закроют ваше конкретное бизнес-требование'
+            eyebrow="к результату"
+            title={
+              solution.capabilitiesTitle ??
+              "Какие задачи рекрутинга можно автоматизировать"
+            }
+            intro={
+              solution.capabilitiesIntro ??
+              "Области применения определяются конкретной задачей и текущей организацией работы."
+            }
           />
 
           <div className={styles.capabilityGrid}>
@@ -466,7 +486,6 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
 
                 <h3>{item.title || item.text}</h3>
                 {item.title && <ClaimText claim={item} />}
-                <ClaimStatus claim={item} />
               </article>
             ))}
           </div>
@@ -474,93 +493,67 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
       </section>
 
       {/* Scenarios */}
-      <section id="scenarios" className={styles.section}>
-        <div className={styles.container}>
-          <SectionIntro
-            eyebrow="Примеры задач"
-            title="Типовые задачи рекрутинга"
-            intro="Каждый сценарий начинается с выявления конкретной проблемы процесса и заканчивается определением подхода, который имеет смысл реализовать."
-          />
-
-          <div className={styles.scenarioGrid}>
-            {solution.scenarios.map((scenario, index) => (
-              <article className={styles.scenarioCard} key={scenario.title}>
-                <div className={styles.scenarioHeader}>
-                  <span className={styles.scenarioNumber}>
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-
-                  <h3>{scenario.title}</h3>
-                </div>
-
-                <div className={styles.scenarioFlow}>
-                  <div className={styles.scenarioBlock}>
-                    <span>Проблема</span>
-                    <p>{scenario.problem}</p>
-                  </div>
-
-                  <div className={styles.scenarioArrow} aria-hidden="true">
-                    ↓
-                  </div>
-
-                  <div className={styles.scenarioBlock}>
-                    <span>Подход</span>
-                    <p>{scenario.solution}</p>
-                  </div>
-
-                  {scenario.outcome && (
-                    <>
-                      <div className={styles.scenarioArrow} aria-hidden="true">
-                        ↓
-                      </div>
-
-                      <div className={styles.scenarioOutcome}>
-                        <div className={styles.outcomeHeader}>
-                          <span>Результат</span>
-                          <EvidenceBadge status={scenario.outcome.status} />
-                        </div>
-
-                        <p>{scenario.outcome.text}</p>
-                      </div>
-                    </>
-                  )}
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {solution.workflow && (
-        <section
-          id="workflow"
-          className={`${styles.section} ${styles.sectionMuted}`}
-        >
+      {solution.scenarios.length > 0 && (
+        <section id="scenarios" className={styles.section}>
           <div className={styles.container}>
             <SectionIntro
-              eyebrow="Процесс подбора"
-              title={solution.workflow.title}
-              intro={solution.workflow.intro}
+              eyebrow="Примеры задач"
+              title={solution.scenariosTitle ?? "Типовые задачи рекрутинга"}
+              intro={
+                solution.scenariosIntro ??
+                "Каждый сценарий начинается с выявления конкретной проблемы процесса и заканчивается определением подхода, который имеет смысл реализовать."
+              }
             />
-            <ol className={styles.workflowTimeline}>
-              {solution.workflow.steps.map((step, index) => (
-                <li
-                  className={styles.workflowTimelineItem}
-                  key={`${step.text}-${index}`}
-                >
-                  <span
-                    className={styles.workflowTimelineNumber}
-                    aria-hidden="true"
-                  >
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <div>
-                    <h3>{step.title || step.text}</h3>
-                    {step.text !== step.title && <p>{step.text}</p>}
+
+            <div className={styles.scenarioGrid}>
+              {solution.scenarios.map((scenario, index) => (
+                <article className={styles.scenarioCard} key={scenario.title}>
+                  <div className={styles.scenarioHeader}>
+                    <span className={styles.scenarioNumber}>
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+
+                    <h3>{scenario.title}</h3>
                   </div>
-                </li>
+
+                  <div className={styles.scenarioFlow}>
+                    <div className={styles.scenarioBlock}>
+                      <span>Проблема</span>
+                      <p>{scenario.problem}</p>
+                    </div>
+
+                    <div className={styles.scenarioArrow} aria-hidden="true">
+                      ↓
+                    </div>
+
+                    <div className={styles.scenarioBlock}>
+                      <span>Подход</span>
+                      <p>{scenario.solution}</p>
+                    </div>
+
+                    {scenario.outcome && (
+                      <>
+                        <div
+                          className={styles.scenarioArrow}
+                          aria-hidden="true"
+                        >
+                          ↓
+                        </div>
+
+                        <div className={styles.scenarioOutcome}>
+                          <div className={styles.outcomeHeader}>
+                            <span>Результат</span>
+                            <EvidenceBadge status={scenario.outcome.status} />
+                          </div>
+
+                          <p>{scenario.outcome.text}</p>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </article>
               ))}
-            </ol>
+            </div>
           </div>
         </section>
       )}
@@ -573,10 +566,16 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
         >
           <div className={styles.container}>
             <SectionIntro
-              eyebrow="Интеграции"
+              eyebrow="Работа с системами"
               title={solution.integrations.title}
               intro={solution.integrations.intro}
             />
+
+            {solution.integrations.statement && (
+              <p className={styles.integrationStatement}>
+                {solution.integrations.statement}
+              </p>
+            )}
 
             {solution.integrations.items.length > 0 ? (
               <div className={styles.integrationGrid}>
@@ -588,77 +587,35 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
 
                     <h3>{item.title || item.text}</h3>
                     {item.title && <ClaimText claim={item} />}
-
-                    <ClaimStatus claim={item} />
                   </article>
                 ))}
               </div>
-            ) : (
-              <div className={styles.integrationNote}>
-                <span className={styles.integrationNoteMark} aria-hidden="true">
-                  API
-                </span>
-
-                <div>
-                  <h3>Подключаем нужные вам системы</h3>
-                  <p>
-                    Интеграции подбираются под задачи компании и уже
-                    используемые системы и сервисы. Не нужно менять привычные
-                    процессы — AI-рекрутинг встраивается в существующую
-                    инфраструктуру.
-                  </p>
-                </div>
-              </div>
-            )}
+            ) : null}
           </div>
         </section>
       )}
 
-      {solution.humanInLoop && (
-        <section
-          id="human-in-loop"
-          className={`${styles.section} ${styles.humanInLoop}`}
-        >
-          <div className={styles.container}>
-            <SectionIntro
-              eyebrow="Участие рекрутера"
-              title={solution.humanInLoop.title}
-              intro={solution.humanInLoop.intro}
-            />
-            <div className={styles.humanInLoopLayout}>
-              <div className={styles.humanInLoopStatement}>
-                <span className={styles.humanInLoopArrow} aria-hidden="true">
-                  →
-                </span>
-                <p>
-                  {solution.humanInLoop.statement ??
-                    solution.humanInLoop.intro?.split("\n\n")[1]}
-                </p>
-              </div>
-              <div className={styles.humanInLoopList}>
-                {solution.humanInLoop.items.map((item, index) => (
-                  <article
-                    className={styles.humanInLoopItem}
-                    key={`${item.text}-${index}`}
-                  >
-                    <span>{String(index + 1).padStart(2, "0")}</span>
-                    <div>
-                      <h3>{item.title || item.text}</h3>
-                      {item.title && <ClaimText claim={item} />}
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
+      {solution.development && (
+        <ContentSection
+          id="development"
+          eyebrow="Постепенное развитие"
+          section={solution.development}
+        />
+      )}
+
+      {solution.humanRole && (
+        <ContentSection
+          id="human-role"
+          eyebrow="Человек и AI"
+          section={solution.humanRole}
+        />
       )}
 
       {/* Business value */}
       <section id="value" className={styles.section}>
         <div className={styles.container}>
           <SectionIntro
-            eyebrow="Результат"
+            eyebrow={solution.businessValueEyebrow ?? "Результат"}
             title={solution.businessValue.title}
           />
 
@@ -668,12 +625,14 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
                 →
               </span>
 
-              <h3>Меньше ручной работы — больше возможностей для команды</h3>
+              <h3>
+                {solution.businessValueLeadTitle ??
+                  "Меньше ручной работы — больше возможностей для команды"}
+              </h3>
 
               <p>
-                Мы автоматизируем те этапы подбора, которые отнимают больше
-                всего времени, чтобы рекрутеры могли сосредоточиться на задачах,
-                где действительно требуется их участие.
+                {solution.businessValueLeadText ??
+                  "Автоматизация помогает сосредоточиться на задачах, где требуется профессиональное участие."}
               </p>
             </div>
 
@@ -687,7 +646,6 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
                   <div className={styles.valueItemContent}>
                     <h3>{item.title || item.text}</h3>
                     {item.title && <ClaimText claim={item} />}
-                    <ClaimStatus claim={item} />
                   </div>
                 </article>
               ))}
@@ -703,9 +661,12 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
       >
         <div className={styles.container}>
           <SectionIntro
-            eyebrow="Ключевое"
-            title="AI-рекрутинг под задачи вашей компании"
-            intro="Sherpa AI помогает автоматизировать конкретные этапы найма, интегрируется с необходимыми системами и адаптируется под существующие процессы компании. Ниже — примеры проектов, показывающие, как такой подход применялся на практике в HR-процессах."
+            eyebrow="Практика"
+            title={solution.evidenceTitle ?? "Практический опыт"}
+            intro={
+              solution.evidenceIntro ??
+              "Ниже — примеры проектов и подтверждённые сведения о применении подхода на практике."
+            }
           />
 
           <div className={styles.evidenceLegend}>
@@ -738,6 +699,38 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
         </div>
       </section>
 
+      {solution.relatedSolutions && solution.relatedSolutions.length > 0 && (
+        <section
+          className={styles.section}
+          aria-labelledby="related-solutions-title"
+        >
+          <div className={styles.container}>
+            <p className={styles.eyebrow}>Связанные решения</p>
+            <h2 className={styles.sectionTitle} id="related-solutions-title">
+              Другие задачи подбора
+            </h2>
+            <div className={styles.relatedLinks}>
+              {solution.relatedSolutions.map((relatedSlug) => {
+                const related = solutionRegistry.find(
+                  (item) => item.slug === relatedSlug,
+                );
+
+                return related ? (
+                  <Link
+                    className={styles.relatedLink}
+                    href={`/${related.slug}/`}
+                    key={related.slug}
+                  >
+                    {related.name}
+                    <ArrowIcon />
+                  </Link>
+                ) : null;
+              })}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* FAQ */}
       <section id="faq" className={styles.section}>
         <div className={styles.container}>
@@ -748,7 +741,8 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
               <h2 className={styles.sectionTitle}>Частые вопросы</h2>
 
               <p className={styles.sectionIntro}>
-                Ответы на основные вопросы о подходе и формировании решения.
+                {solution.faqIntro ??
+                  "Ответы на основные вопросы о подходе и формировании решения."}
               </p>
             </div>
 

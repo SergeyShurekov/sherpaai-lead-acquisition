@@ -549,25 +549,18 @@
   line-height: 1.65;
 }
 
-.problemLayout:has(.claimGrid > .claimCard:nth-child(2):last-child) .claimCard > p,
+.claimCard > p,
 .solutionItemBody > p,
 .integrationCard > p,
-.valueItemContent > p,
-.humanInLoopItem > p {
+.valueItemContent > p {
   margin-top: 12px;
   color: var(--ink-soft);
   font-size: 15px;
   line-height: 1.65;
 }
 
-/* Claim metadata */
-
-.claimMeta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 7px;
-  margin-top: 14px;
+.claimSource {
+  font-size: 13px !important;
 }
 
 .evidenceBadge {
@@ -613,85 +606,7 @@
   border-color: #d6dde2;
 }
 
-.sourceLabel {
-  color: var(--ink-muted);
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 9px;
-  line-height: 1.4;
-}
-
 /* Solution */
-
-.transformation {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(150px, 0.4fr) minmax(0, 1fr);
-  gap: 20px;
-  align-items: center;
-  margin-bottom: 48px;
-  padding: 28px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--surface);
-}
-
-.transformationSide {
-  min-height: 150px;
-  padding: 22px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: var(--white);
-}
-
-.transformationLabel {
-  display: block;
-  margin-bottom: 30px;
-  color: var(--ink-muted);
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 9px;
-  letter-spacing: 0.08em;
-}
-
-.transformationSide h3 {
-  font-size: 18px;
-  line-height: 1.3;
-}
-
-.transformationSide p {
-  margin-top: 8px;
-  color: var(--ink-soft);
-  font-size: 13px;
-  line-height: 1.55;
-}
-
-.transformationCore {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 9px;
-  color: var(--accent);
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-.transformationCoreMark {
-  display: inline-flex;
-  width: 52px;
-  height: 52px;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #9bcfc9;
-  border-radius: 50%;
-  color: var(--accent);
-  background: var(--accent-soft);
-  font-size: 12px;
-}
-
-.transformationCore .arrowIcon {
-  transform: rotate(0deg);
-}
 
 .solutionList {
   display: grid;
@@ -784,11 +699,6 @@
   color: #9eacb5;
   font-size: 12px;
   line-height: 1.5;
-}
-
-.capabilityCard .claimMeta {
-  position: static;
-  margin-top: 18px;
 }
 
 .sectionDark .evidenceBadge_inference {
@@ -922,45 +832,6 @@
 .integrationCard h3 {
   font-size: 16px;
   line-height: 1.45;
-}
-
-.integrationNote {
-  display: flex;
-  align-items: flex-start;
-  gap: 24px;
-  padding: 28px;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: var(--white);
-}
-
-.integrationNoteMark {
-  display: inline-flex;
-  width: 48px;
-  height: 48px;
-  flex: 0 0 48px;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #b9dcd8;
-  border-radius: 7px;
-  color: var(--accent);
-  background: var(--accent-soft);
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 10px;
-  font-weight: 700;
-}
-
-.integrationNote h3 {
-  font-size: 18px;
-  line-height: 1.4;
-}
-
-.integrationNote p {
-  max-width: 720px;
-  margin-top: 7px;
-  color: var(--ink-soft);
-  font-size: 14px;
-  line-height: 1.65;
 }
 
 /* Business value */
@@ -1539,30 +1410,6 @@
     min-height: 0;
   }
 
-  .transformation {
-    grid-template-columns: 1fr;
-    gap: 10px;
-    padding: 14px;
-  }
-
-  .transformationSide {
-    min-height: 0;
-  }
-
-  .transformationLabel {
-    margin-bottom: 18px;
-  }
-
-  .transformationCore {
-    flex-direction: row;
-    justify-content: center;
-    padding-block: 6px;
-  }
-
-  .transformationCore .arrowIcon {
-    transform: rotate(90deg);
-  }
-
   .solutionItem {
     gap: 14px;
     padding: 22px 0;
@@ -1578,12 +1425,6 @@
 
   .scenarioCard {
     padding: 20px;
-  }
-
-  .integrationNote {
-    flex-direction: column;
-    gap: 18px;
-    padding: 22px;
   }
 
   .valueLead {
@@ -1660,122 +1501,6 @@
   }
 }
 
-/* LP-05 workflow and human-in-the-loop sections */
-
-.workflowTimeline {
-  display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 0;
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
-.workflowTimelineItem {
-  position: relative;
-  min-height: 150px;
-  padding: 20px 18px;
-  border-top: 1px solid var(--line-strong);
-  border-bottom: 1px solid var(--line);
-  border-left: 1px solid var(--line);
-  background: var(--white);
-}
-
-.workflowTimelineItem:last-child {
-  border-right: 1px solid var(--line);
-}
-
-.workflowTimelineNumber {
-  display: block;
-  margin-bottom: 34px;
-  color: var(--accent);
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 11px;
-  font-weight: 700;
-}
-
-.workflowTimelineItem h3 {
-  font-size: 15px;
-  line-height: 1.35;
-}
-
-.workflowTimelineItem p {
-  margin-top: 8px;
-  color: var(--ink-soft);
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-.humanInLoop {
-  border-top: 1px solid var(--line);
-  background: var(--surface);
-}
-
-.humanInLoopLayout {
-  display: grid;
-  grid-template-columns: minmax(260px, 0.7fr) minmax(0, 1.3fr);
-  gap: 56px;
-  align-items: start;
-}
-
-.humanInLoopStatement {
-  padding: 28px;
-  border: 1px solid #a9cfc9;
-  background: var(--white);
-}
-
-.humanInLoopArrow {
-  display: block;
-  margin-bottom: 32px;
-  color: var(--accent);
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 22px;
-}
-
-.humanInLoopStatement p {
-  color: var(--ink);
-  font-size: 20px;
-  font-weight: 650;
-  line-height: 1.45;
-}
-
-.humanInLoopList {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  border-top: 1px solid var(--line);
-  border-left: 1px solid var(--line);
-}
-
-.humanInLoopItem {
-  display: grid;
-  grid-template-columns: 38px minmax(0, 1fr);
-  gap: 14px;
-  min-height: 120px;
-  padding: 20px;
-  border-right: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  background: var(--white);
-}
-
-.humanInLoopItem > span {
-  color: var(--accent);
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 11px;
-  font-weight: 700;
-}
-
-.humanInLoopItem h3 {
-  font-size: 16px;
-  line-height: 1.4;
-}
-
-.humanInLoopItem p {
-  margin-top: 6px;
-  color: var(--ink-soft);
-  font-size: 13px;
-  line-height: 1.5;
-}
-
 .relatedLinks {
   display: flex;
   flex-wrap: wrap;
@@ -1786,6 +1511,14 @@
   border-top: 1px solid var(--line);
   color: var(--ink-soft);
   font-size: 14px;
+}
+
+.integrationStatement {
+  max-width: 760px;
+  margin-top: 24px;
+  color: var(--ink-soft);
+  font-size: 17px;
+  line-height: 1.7;
 }
 
 .relatedLink {
@@ -1806,51 +1539,7 @@
   color: var(--accent);
 }
 
-@media (max-width: 1024px) {
-  .workflowTimeline {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .workflowTimelineItem:nth-child(2n) {
-    border-right: 1px solid var(--line);
-  }
-
-  .humanInLoopLayout {
-    grid-template-columns: 1fr;
-    gap: 32px;
-  }
-}
-
 @media (max-width: 640px) {
-  .workflowTimeline {
-    grid-template-columns: 1fr;
-  }
-
-  .workflowTimelineItem {
-    min-height: 0;
-    border-right: 1px solid var(--line);
-  }
-
-  .workflowTimelineItem + .workflowTimelineItem {
-    border-top: 0;
-  }
-
-  .workflowTimelineNumber {
-    margin-bottom: 18px;
-  }
-
-  .humanInLoopList {
-    grid-template-columns: 1fr;
-  }
-
-  .humanInLoopStatement {
-    padding: 22px;
-  }
-
-  .humanInLoopStatement p {
-    font-size: 18px;
-  }
-
   .relatedLinks {
     align-items: flex-start;
     flex-direction: column;

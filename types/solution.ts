@@ -31,6 +31,7 @@ export interface SolutionSection {
     title: string;
     intro?: string;
     statement?: string;
+    lead?: string;
     items: SolutionClaim[];
 }
 
@@ -78,7 +79,8 @@ export interface Solution {
     workflow?: SolutionWorkflow;
     integrations?: SolutionSection;
     businessValue: SolutionSection;
-    humanInLoop?: SolutionSection;
+    humanRole?: SolutionSection;
+    development?: SolutionSection;
     evidence: EvidenceItem[];
     faq: SolutionFAQItem[];
 
@@ -89,5 +91,16 @@ export interface Solution {
     entities?: string[];
 
     heroDescription?: string;
+    heroNote?: string;
+    capabilitiesTitle?: string;
+    capabilitiesIntro?: string;
+    scenariosTitle?: string;
+    scenariosIntro?: string;
+    businessValueEyebrow?: string;
+    businessValueLeadTitle?: string;
+    businessValueLeadText?: string;
+    evidenceTitle?: string;
+    evidenceIntro?: string;
+    faqIntro?: string;
     finalCtaDescription?: string;
 }
