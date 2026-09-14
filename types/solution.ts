@@ -79,6 +79,7 @@ export interface Solution {
     workflow?: SolutionWorkflow;
     integrations?: SolutionSection;
     businessValue: SolutionSection;
+    humanInLoop?: SolutionSection;
     humanRole?: SolutionSection;
     development?: SolutionSection;
     evidence: EvidenceItem[];
