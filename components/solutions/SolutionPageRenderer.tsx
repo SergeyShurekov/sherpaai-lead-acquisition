@@ -323,7 +323,7 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
                 </div>
 
                 <span className={styles.visualChromeLabel}>
-                  РАБОЧИЙ СЦЕНАРИЙ
+                  {heroWorkflow?.visualLabel ?? "РАБОЧИЙ СЦЕНАРИЙ"}
                 </span>
               </div>
 
@@ -380,9 +380,13 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
               </div>
 
               <div className={styles.visualFooter}>
-                <span>ГИБКИЙ</span>
-                <span>ОРИЕНТИРОВАННЫЙ НА ПРОЦЕСС</span>
-                <span>С УЧАСТИЕМ СПЕЦИАЛИСТА</span>
+                {(heroWorkflow?.visualFooter ?? [
+                  "ГИБКИЙ",
+                  "ОРИЕНТИРОВАННЫЙ НА ПРОЦЕСС",
+                  "С УЧАСТИЕМ СПЕЦИАЛИСТА",
+                ]).map((item) => (
+                  <span key={item}>{item}</span>
+                ))}
               </div>
             </div>
           </div>

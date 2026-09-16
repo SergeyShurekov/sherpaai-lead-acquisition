@@ -48,6 +48,8 @@ export interface SolutionHeroWorkflow {
     designDescription?: string;
     resultLabel?: string;
     resultDescription?: string;
+    visualLabel?: string;
+    visualFooter?: string[];
 }
 
 export interface SolutionScenario {

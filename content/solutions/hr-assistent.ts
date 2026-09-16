@@ -11,6 +11,12 @@ export const hrAssistent: Solution = {
     heroWorkflow: {
         taskLabel: "Работает с информацией",
         taskDescription: "Ищет и собирает нужные сведения",
+        designLabel: "Обрабатывает данные",
+        designDescription: "Структурирует, сопоставляет, суммирует",
+        resultLabel: "Готовит результат",
+        resultDescription: "Ответ, документ, сводку или другой материал",
+        visualLabel: "HR-АССИСТЕНТ",
+        visualFooter: ["ИНФОРМАЦИЯ", "ДАННЫЕ", "ДОКУМЕНТЫ", "МАТЕРИАЛЫ"],
     },
     seo: {
         title: "HR-ассистент на базе ИИ — автоматизация задач HR | Sherpa AI",
