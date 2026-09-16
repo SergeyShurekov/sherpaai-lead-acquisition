@@ -210,12 +210,6 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
       {
         "@type": "ListItem",
         position: 2,
-        name: "Sherpa AI",
-        item: "https://sherpaai.ru/bot/chat-bot-rekruting/",
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
         name: solution.name,
         item: pageUrl,
       },
@@ -275,7 +269,7 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
             <div className={styles.heroContent}>
               <p className={styles.heroKicker}>
                 <span className={styles.heroKickerMark}>AI</span>
-                Sherpa AI · решение для рекрутинга
+                {solution.heroKicker ?? "Sherpa AI · решение для рекрутинга"}
               </p>
 
               <h1 className={styles.heroTitle}>{solution.h1}</h1>
@@ -492,6 +486,32 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
         </div>
       </section>
 
+      {solution.workflow && (
+        <section id="workflow" className={styles.section}>
+          <div className={styles.container}>
+            <SectionIntro
+              eyebrow="Человек и AI"
+              title={solution.workflow.title}
+              intro={solution.workflow.intro}
+            />
+
+            <div className={styles.solutionList}>
+              {solution.workflow.steps.map((step, index) => (
+                <article className={styles.solutionItem} key={step.title}>
+                  <span className={styles.solutionItemNumber}>
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <div className={styles.solutionItemBody}>
+                    <h3>{step.title}</h3>
+                    <ClaimText claim={step} />
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Scenarios */}
       {solution.scenarios.length > 0 && (
         <section id="scenarios" className={styles.section}>
@@ -612,6 +632,7 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
       )}
 
       {/* Business value */}
+      {solution.businessValue.title && (
       <section id="value" className={styles.section}>
         <div className={styles.container}>
           <SectionIntro
@@ -653,6 +674,7 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
           </div>
         </div>
       </section>
+      )}
 
       {/* Evidence */}
       <section

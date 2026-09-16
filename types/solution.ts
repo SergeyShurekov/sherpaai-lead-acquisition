@@ -92,6 +92,7 @@ export interface Solution {
     entities?: string[];
 
     heroDescription?: string;
+    heroKicker?: string;
     heroNote?: string;
     capabilitiesTitle?: string;
     capabilitiesIntro?: string;
