@@ -8,6 +8,10 @@ export const hrAssistent: Solution = {
     heroDescription:
         "AI-помощник, который помогает HR-специалисту искать, обрабатывать и подготавливать информацию, работать с документами и рутинными задачами.",
     heroKicker: "Sherpa AI · AI-ассистент для HR",
+    heroWorkflow: {
+        taskLabel: "Работает с информацией",
+        taskDescription: "Ищет и собирает нужные сведения",
+    },
     seo: {
         title: "HR-ассистент на базе ИИ — автоматизация задач HR | Sherpa AI",
         metaDescription:

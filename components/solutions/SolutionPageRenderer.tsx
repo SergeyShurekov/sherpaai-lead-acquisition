@@ -196,6 +196,7 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
   const heroDescription = solution.heroDescription ?? solution.solution.intro;
   const finalCtaDescription =
     solution.finalCtaDescription ?? solution.businessValue.intro;
+  const heroWorkflow = solution.heroWorkflow;
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -333,8 +334,10 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
                   </span>
 
                   <div>
-                    <strong>Задача</strong>
-                    <span>Конкретный участок работы</span>
+                    <strong>{heroWorkflow?.taskLabel ?? "Задача"}</strong>
+                    <span>
+                      {heroWorkflow?.taskDescription ?? "Конкретный участок работы"}
+                    </span>
                   </div>
                 </div>
 
@@ -350,8 +353,11 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
                   </span>
 
                   <div>
-                    <strong>Проектирование</strong>
-                    <span>Определяем подход и последовательность действий</span>
+                    <strong>{heroWorkflow?.designLabel ?? "Проектирование"}</strong>
+                    <span>
+                      {heroWorkflow?.designDescription ??
+                        "Определяем подход и последовательность действий"}
+                    </span>
                   </div>
                 </div>
 
@@ -365,8 +371,10 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
                   </span>
 
                   <div>
-                    <strong>Результат</strong>
-                    <span>Настроенный рабочий сценарий</span>
+                    <strong>{heroWorkflow?.resultLabel ?? "Результат"}</strong>
+                    <span>
+                      {heroWorkflow?.resultDescription ?? "Настроенный рабочий сценарий"}
+                    </span>
                   </div>
                 </div>
               </div>

@@ -41,6 +41,15 @@ export interface SolutionWorkflow {
     steps: SolutionClaim[];
 }
 
+export interface SolutionHeroWorkflow {
+    taskLabel?: string;
+    taskDescription?: string;
+    designLabel?: string;
+    designDescription?: string;
+    resultLabel?: string;
+    resultDescription?: string;
+}
+
 export interface SolutionScenario {
     title: string;
     problem: string;
@@ -94,6 +103,7 @@ export interface Solution {
     heroDescription?: string;
     heroKicker?: string;
     heroNote?: string;
+    heroWorkflow?: SolutionHeroWorkflow;
     capabilitiesTitle?: string;
     capabilitiesIntro?: string;
     scenariosTitle?: string;
