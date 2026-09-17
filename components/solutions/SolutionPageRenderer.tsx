@@ -330,13 +330,14 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
               <div className={styles.workflow}>
                 <div className={styles.workflowStep}>
                   <span className={styles.workflowIcon} aria-hidden="true">
-                    01
+                    AI
                   </span>
 
                   <div>
                     <strong>{heroWorkflow?.taskLabel ?? "Задача"}</strong>
                     <span>
-                      {heroWorkflow?.taskDescription ?? "Конкретный участок работы"}
+                      {heroWorkflow?.taskDescription ??
+                        "Конкретный участок работы"}
                     </span>
                   </div>
                 </div>
@@ -353,7 +354,9 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
                   </span>
 
                   <div>
-                    <strong>{heroWorkflow?.designLabel ?? "Проектирование"}</strong>
+                    <strong>
+                      {heroWorkflow?.designLabel ?? "Проектирование"}
+                    </strong>
                     <span>
                       {heroWorkflow?.designDescription ??
                         "Определяем подход и последовательность действий"}
@@ -367,24 +370,27 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
 
                 <div className={styles.workflowStep}>
                   <span className={styles.workflowIcon} aria-hidden="true">
-                    03
+                    AI
                   </span>
 
                   <div>
                     <strong>{heroWorkflow?.resultLabel ?? "Результат"}</strong>
                     <span>
-                      {heroWorkflow?.resultDescription ?? "Настроенный рабочий сценарий"}
+                      {heroWorkflow?.resultDescription ??
+                        "Настроенный рабочий сценарий"}
                     </span>
                   </div>
                 </div>
               </div>
 
               <div className={styles.visualFooter}>
-                {(heroWorkflow?.visualFooter ?? [
-                  "ГИБКИЙ",
-                  "ОРИЕНТИРОВАННЫЙ НА ПРОЦЕСС",
-                  "С УЧАСТИЕМ СПЕЦИАЛИСТА",
-                ]).map((item) => (
+                {(
+                  heroWorkflow?.visualFooter ?? [
+                    "ГИБКИЙ",
+                    "ОРИЕНТИРОВАННЫЙ НА ПРОЦЕСС",
+                    "С УЧАСТИЕМ СПЕЦИАЛИСТА",
+                  ]
+                ).map((item) => (
                   <span key={item}>{item}</span>
                 ))}
               </div>
@@ -393,53 +399,59 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
         </div>
       </section>
 
-      {/* Problem */}
-      <section
-        id="problem"
-        className={`${styles.section} ${styles.sectionMuted}`}
-      >
-        <div className={styles.container}>
-          <SectionIntro
-            eyebrow="Проблема"
-            title={solution.problem.title}
-            intro={solution.problem.intro}
-          />
+      {solution.slug !== "hr-assistant" && (
+        /* Problem */
+        <section
+          id="problem"
+          className={`${styles.section} ${styles.sectionMuted}`}
+        >
+          <div className={styles.container}>
+            <SectionIntro
+              eyebrow="Проблема"
+              title={solution.problem.title}
+              intro={solution.problem.intro}
+            />
 
-          <div className={styles.problemLayout}>
-            <div className={styles.problemLead}>
-              <span className={styles.sectionIndex}>01</span>
+            <div className={styles.problemLayout}>
+              <div className={styles.problemLead}>
+                <span className={styles.sectionIndex}>01</span>
 
-              <h3>{solution.problem.statement ?? solution.problem.title}</h3>
+                <h3>{solution.problem.statement ?? solution.problem.title}</h3>
 
-              {(solution.problem.lead ?? solution.problem.intro) && (
-                <p>
-                  {solution.problem.lead ??
-                    solution.problem.intro?.split("\n\n")[0]}
-                </p>
-              )}
-            </div>
+                {(solution.problem.lead ?? solution.problem.intro) && (
+                  <p>
+                    {solution.problem.lead ??
+                      solution.problem.intro?.split("\n\n")[0]}
+                  </p>
+                )}
+              </div>
 
-            <div className={styles.claimGrid}>
-              {solution.problem.items.map((item, index) => (
-                <article className={styles.claimCard} key={item.text}>
-                  <div className={styles.cardNumber}>
-                    {String(index + 1).padStart(2, "0")}
-                  </div>
+              <div className={styles.claimGrid}>
+                {solution.problem.items.map((item, index) => (
+                  <article className={styles.claimCard} key={item.text}>
+                    <div className={styles.cardNumber}>
+                      {String(index + 1).padStart(2, "0")}
+                    </div>
 
-                  <h3>{item.title || item.text}</h3>
-                  {item.title && <ClaimText claim={item} />}
-                </article>
-              ))}
+                    <h3>{item.title || item.text}</h3>
+                    {item.title && <ClaimText claim={item} />}
+                  </article>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Solution */}
       <section id="solution" className={styles.section}>
         <div className={styles.container}>
           <SectionIntro
-            eyebrow="Решение"
+            eyebrow={
+              solution.slug === "hr-assistant"
+                ? "Формы взаимодействия"
+                : "Решение"
+            }
             title={solution.solution.title}
             intro={solution.solution.intro}
           />
@@ -468,7 +480,9 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
       >
         <div className={styles.container}>
           <SectionIntro
-            eyebrow="к результату"
+            eyebrow={
+              solution.slug === "hr-assistant" ? "AI умеет" : "к результату"
+            }
             title={
               solution.capabilitiesTitle ??
               "Какие задачи рекрутинга можно автоматизировать"
@@ -598,7 +612,11 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
         >
           <div className={styles.container}>
             <SectionIntro
-              eyebrow="Работа с системами"
+              eyebrow={
+                solution.slug === "hr-assistant"
+                  ? "Граница между HR и AI"
+                  : "Работа с системами"
+              }
               title={solution.integrations.title}
               intro={solution.integrations.intro}
             />
@@ -630,7 +648,11 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
       {solution.development && (
         <ContentSection
           id="development"
-          eyebrow="Постепенное развитие"
+          eyebrow={
+            solution.slug === "hr-assistant"
+              ? "ПОДХОД SHERPA AI"
+              : "Постепенное развитие"
+          }
           section={solution.development}
         />
       )}
@@ -645,47 +667,47 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
 
       {/* Business value */}
       {solution.businessValue.title && (
-      <section id="value" className={styles.section}>
-        <div className={styles.container}>
-          <SectionIntro
-            eyebrow={solution.businessValueEyebrow ?? "Результат"}
-            title={solution.businessValue.title}
-          />
+        <section id="value" className={styles.section}>
+          <div className={styles.container}>
+            <SectionIntro
+              eyebrow={solution.businessValueEyebrow ?? "Результат"}
+              title={solution.businessValue.title}
+            />
 
-          <div className={styles.valueLayout}>
-            <div className={styles.valueLead}>
-              <span className={styles.valueLeadMark} aria-hidden="true">
-                →
-              </span>
+            <div className={styles.valueLayout}>
+              <div className={styles.valueLead}>
+                <span className={styles.valueLeadMark} aria-hidden="true">
+                  →
+                </span>
 
-              <h3>
-                {solution.businessValueLeadTitle ??
-                  "Меньше ручной работы — больше возможностей для команды"}
-              </h3>
+                <h3>
+                  {solution.businessValueLeadTitle ??
+                    "Меньше ручной работы — больше возможностей для команды"}
+                </h3>
 
-              <p>
-                {solution.businessValueLeadText ??
-                  "Автоматизация помогает сосредоточиться на задачах, где требуется профессиональное участие."}
-              </p>
-            </div>
+                <p>
+                  {solution.businessValueLeadText ??
+                    "Автоматизация помогает сосредоточиться на задачах, где требуется профессиональное участие."}
+                </p>
+              </div>
 
-            <div className={styles.valueList}>
-              {solution.businessValue.items.map((item, index) => (
-                <article className={styles.valueItem} key={item.text}>
-                  <span className={styles.valueItemNumber}>
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
+              <div className={styles.valueList}>
+                {solution.businessValue.items.map((item, index) => (
+                  <article className={styles.valueItem} key={item.text}>
+                    <span className={styles.valueItemNumber}>
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
 
-                  <div className={styles.valueItemContent}>
-                    <h3>{item.title || item.text}</h3>
-                    {item.title && <ClaimText claim={item} />}
-                  </div>
-                </article>
-              ))}
+                    <div className={styles.valueItemContent}>
+                      <h3>{item.title || item.text}</h3>
+                      {item.title && <ClaimText claim={item} />}
+                    </div>
+                  </article>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
       )}
 
       {/* Evidence */}
