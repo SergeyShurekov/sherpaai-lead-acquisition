@@ -192,7 +192,7 @@ function ContentSection({
 }
 
 export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
-  const pageUrl = getAbsoluteUrl(`/${solution.slug}/`);
+  const pageUrl = getAbsoluteUrl(`/${solution.slug}`);
   const heroDescription = solution.heroDescription ?? solution.solution.intro;
   const finalCtaDescription =
     solution.finalCtaDescription ?? solution.businessValue.intro;
@@ -774,7 +774,7 @@ export function SolutionPageRenderer({ solution }: SolutionPageRendererProps) {
                 return related ? (
                   <Link
                     className={styles.relatedLink}
-                    href={`/${related.slug}/`}
+                    href={`/${related.slug}`}
                     key={related.slug}
                   >
                     {related.name}

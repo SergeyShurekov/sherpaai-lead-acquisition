@@ -7,7 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     return [
         { url: getAbsoluteUrl("/") },
         ...solutionRegistry.map((solution) => ({
-            url: getAbsoluteUrl(`/${solution.slug}/`),
+            url: getAbsoluteUrl(`/${solution.slug}`),
         })),
     ];
 }

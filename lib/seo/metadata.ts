@@ -22,7 +22,7 @@ export function createHomepageMetadata(): Metadata {
 }
 
 export function createSolutionMetadata(solution: Solution): Metadata {
-    const canonicalUrl = getAbsoluteUrl(`/${solution.slug}/`);
+    const canonicalUrl = getAbsoluteUrl(`/${solution.slug}`);
 
     return {
         title: solution.seo.title,

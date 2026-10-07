@@ -6,7 +6,9 @@ export function getSiteUrl(): string {
 
 export function getAbsoluteUrl(path = "/"): string {
     const baseUrl = getSiteUrl().replace(/\/+$/, "");
-    const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+    const normalizedPath = path === "/"
+        ? "/"
+        : `/${path.replace(/^\/+|\/+$/g, "")}`;
 
     return `${baseUrl}${normalizedPath}`;
 }
